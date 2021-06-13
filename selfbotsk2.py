@@ -231,6 +231,7 @@ wait = {
     'autoLeave1':False,
     "detectMention":False,
     "welcomeOn":False,
+    "Smule":True.
     "sticker":False,  
     "selfbot":True,
     "AddstickerTag": {
@@ -3931,7 +3932,26 @@ def bot(op):
                         elif text.lower() == "csider":
                             if msg._from in owner or msg._from in admin or msg._from in staff or msg._from in mid:
                                dhenzaSelfbot.sendMessage(msg.to, "「Sider Msg」\nSider Msg mu :\n\n「 " + str(wait["mention"]) + " 」")
-                                                      
+                                     
+				
+	#================smule download python
+                        elif "https://www.smule.com" in  msg.text.lower():
+                            if wait["smule"] == True:
+                                regex = r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
+                                links = re.findall(regex, text)
+                                n_links = []
+                                for l in links:
+                                    if l not in n_links:
+                                        n_links.append(l)
+                                for ticket_id in n_links:
+                                    dhenzaSelfbot = json.loads(requests.get("https://api.boteater.us/smule?url="+ticket_id+"&auth="+"Z6vMBEnkp04n").text)
+                                    try:
+                                        if ".m4a" in dhenzaSelfbot["result"]["download_link"]:
+                                            client.sendAudioWithURL(msg.to, dhenzaSelfbot["result"]["download_link"])
+                                        else:
+                                            client.sendVideoWithURL(msg.to, dhenzaSelfbot["result"]["download_link"])
+                                    except Exception as e:
+                                    	client.sendMessage(msg.to,"dhenzaSelfbot Error:\n"+str(e))
 #===========JOIN TICKET============#
                         elif "/ti/g/" in msg.text.lower():
                           if wait["selfbot"] == True:
